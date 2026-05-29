@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You Are Beautiful</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      /* Βαθύ, αισθησιακό κόκκινο/dark rose gradient */
+      background: radial-gradient(circle, #4a0e17 0%, #1a0508 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Το κείμενο με εφέ απαλής λάμψης (Glow) */
+    .message {
+      text-align: center;
+      color: #fff;
+      font-size: 5rem;
+      font-weight: 700;
+      letter-spacing: 7px;
+      text-transform: uppercase; /* Μετατροπή σε κεφαλαία */
+      font-style: italic;
+      text-shadow: 0 0 10px rgba(255, 105, 180, 0.5), 
+                   0 0 20px rgba(255, 20, 147, 0.3), 
+                   0 0 30px rgba(255, 20, 147, 0.2);
+      animation: pulse 3s ease-in-out infinite alternate;
+      z-index: 10;
+      padding: 0 20px;
+      user-select: none;
+    }
+
+    /* Απαλό "αναβόσβημα" στο κείμενο σαν να αναπνέει */
+    @keyframes pulse {
+      0% {
+        transform: scale(0.98);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(1.02);
+        opacity: 1;
+        text-shadow: 0 0 15px rgba(255, 105, 180, 0.8), 
+                     0 0 30px rgba(255, 20, 147, 0.5), 
+                     0 0 45px rgba(255, 20, 147, 0.3);
+      }
+    }
+
+    /* Ρομαντικό Background με καρδιές που πέφτουν αργά */
+    .floating-heart {
+      position: absolute;
+      color: rgba(255, 75, 92, 0.15); /* Πολύ απαλό, ημιδιάφανο κόκκινο */
+      pointer-events: none;
+      z-index: 1;
+      animation: floatDownward 8s linear infinite;
+    }
+
+    @keyframes floatDownward {
+      0% {
+        transform: translateY(-10vh) translateX(0) rotate(0deg) scale(0.5);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) translateX(var(--random-x)) rotate(var(--random-rot)) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive για κινητά για να μην σπάει το κείμενο */
+    @media (max-width: 768px) {
+      .message {
+        font-size: 2.8rem;
+        letter-spacing: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="message">You are beautiful</h1>
+
+  <script>
+    // Δημιουργούμε ρομαντικό background με διάσπαρτες καρδιές που πέφτουν σαν πέταλα
+    function createBackgroundHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      
+      // Ποικιλία από ρομαντικά σύμβολα
+      const heartTypes = ['❤️', '💖', '🖤', '🌹'];
+      heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+
+      // Τυχαία θέση και μέγεθος
+      heart.style.left = Math.random() * 100 + 'vw';
+      const size = Math.random() * 20 + 20; // 20px έως 40px
+      heart.style.fontSize = size + 'px';
+
+      // Τυχαία διάρκεια animation για να μην πέφτουν όλες μαζί (6 έως 12 δευτερόλεπτα)
+      const duration = Math.random() * 6 + 6;
+      heart.style.animationDuration = duration + 's';
+
+      // Τυχαία κίνηση δεξιά-αριστερά και περιστροφή
+      const randomX = (Math.random() - 0.5) * 150 + 'px';
+      const randomRot = (Math.random() - 0.5) * 360 + 'deg';
+      heart.style.setProperty('--random-x', randomX);
+      heart.style.setProperty('--random-rot', randomRot);
+
+      document.body.appendChild(heart);
+
+      // Αφαίρεση αφού βγει από την οθόνη
+      setTimeout(() => {
+        heart.remove();
+      }, duration * 1000);
+    }
+
+    // Δημιουργία των πρώτων καρδιών αμέσως
+    for(let i = 0; i < 15; i++) {
+      setTimeout(createBackgroundHeart, Math.random() * 5000);
+    }
+
+    // Συνεχόμενη ροή ανά 600ms
+    setInterval(createBackgroundHeart, 600);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>This is not a scam (press the button for a surprise!)</title>
+  
+  <style>
+    body {
+      margin: 0;
+      background-color: white; /* Το αρχικό χρώμα του body */
+      transition: background-color 0.5s ease; /* Κάνει την αλλαγή χρώματος ομαλή σαν animation */
+      overflow: hidden; /* Κρύβει τις μπάρες σκρολαρίσματος για τις καρδιές */
+    }
+
+    .flex-container {
+      display: flex;
+      justify-content: center; 
+      align-items: center;   
+      height: 100vh; 
+    }
+
+    .btn {
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 4px; 
+      padding: 15px 30px; 
+      font-size: 16px;
+      cursor: pointer; 
+      z-index: 10; /* Κρατάει το κουμπί πάνω από τις καρδιές */
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: red;
+    }
+
+    /* === ΣΤΥΛ ΓΙΑ ΤΙΣ ΜΕΓΑΛΕΣ ΚΑΡΔΙΕΣ === */
+    .heart {
+      position: absolute;
+      color: #ff4b5c; 
+      font-size: 50px; 
+      pointer-events: none; 
+      z-index: 1;
+      animation: flyUp 2s ease-in-out forwards; 
+    }
+
+    /* === ANIMATION ΓΙΑ ΟΛΗ ΤΗΝ ΟΘΟΝΗ === */
+    @keyframes flyUp {
+      0% {
+        transform: translateY(100vh) scale(0.3) rotate(0deg); /* Ξεκινάνε από το κάτω μέρος της οθόνης */
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-20vh) scale(1.5) rotate(var(--random-rotate)); /* Ανεβαίνουν πάνω από το top της οθόνης */
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flex-container">
+    <a href="javascript:void(0);" style="text-decoration: none;">
+      <button class="btn" id="scam-btn">Press me!</button>
+    </a>
+  </div>
+
+  <script>
+    const btn = document.getElementById('scam-btn');
+    const body = document.body;
+    let heartInterval;
+
+    // Συνάρτηση που δημιουργεί καρδιές σε όλη την οθόνη
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerHTML = '❤️'; 
+
+      // Τυχαία θέση σε όλο το πλάτος της οθόνης (0 έως 100%)
+      const randomLeft = Math.random() * 100;
+      heart.style.left = randomLeft + 'vw';
+      
+      // Ξεκινάνε από το κάτω μέρος της οθόνης
+      heart.style.top = '100vh';
+
+      // Τυχαίο μέγεθος για να μην είναι όλες ολόιδιες (μεταξύ 40px και 80px)
+      const randomSize = Math.floor(Math.random() * 40) + 40;
+      heart.style.fontSize = randomSize + 'px';
+
+      // Τυχαία περιστροφή (μοίρες) για εφέ κίνησης
+      const randomRotate = (Math.random() - 0.5) * 45 + 'deg';
+      heart.style.setProperty('--random-rotate', randomRotate);
+
+      body.appendChild(heart);
+
+      // Σβήσιμο από το HTML αφού βγουν εκτός οθόνης
+      setTimeout(() => {
+        heart.remove();
+      }, 2000);
+    }
+
+    // Όταν το ποντίκι μπαίνει πάνω από το κουμπί (Hover In)
+    btn.addEventListener('mouseenter', () => {
+      body.style.backgroundColor = '#FF94B9'; 
+      
+      // Γεννάει καρδιές πιο γρήγορα (κάθε 80ms) για να γεμίσει η οθόνη
+      heartInterval = setInterval(createHeart, 80);
+    });
+
+    // Όταν το ποντίκι βγαίνει από το κουμπί (Hover Out)
+    btn.addEventListener('mouseleave', () => {
+      body.style.backgroundColor = 'white'; 
+      clearInterval(heartInterval);
+    });
+
+    // ΟΤΑΝ Ο ΧΡΗΣΤΗΣ ΠΑΤΑΕΙ ΤΟ ΚΟΥΜΠΙ
+    btn.addEventListener('click', () => {
+      // Περιμένει 1 δευτερόλεπτο με τις καρδιές και μετά σε στέλνει στο Hello2.html
+      setTimeout(() => {
+        window.location.href = "Hello2.html";
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>
